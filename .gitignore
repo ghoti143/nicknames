@@ -40,6 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+<<<<<<< HEAD
 # Python/Django (from remote)
 __pycache__/
 *.py[cod]
@@ -82,3 +83,7 @@ build/
 # Local bin and obj directories
 apps/backend/bin/
 apps/backend/obj/
+=======
+apps/backend/bin/
+apps/backend/obj/
+>>>>>>> 6389a7f (Connect repository to GitHub remote.)

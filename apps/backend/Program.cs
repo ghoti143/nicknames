@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Api.Data;
+using Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +9,10 @@ var connStr = builder.Configuration.GetConnectionString("Default") ??
     builder.Configuration["ConnectionStrings:Default"] ??
     "Host=localhost;Port=5432;Database=nicknames;Username=user;Password=password";
 
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connStr));
+    options.UseNpgsql(connStr)
+           .UseSnakeCaseNamingConvention());
 
 builder.Services.AddControllers();
 
@@ -17,18 +20,22 @@ var app = builder.Build();
 
 // Seed demo data in development
 using (var scope = app.Services.CreateScope())
-{{
+{
     var ctx = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    ctx.Database.EnsureCreated();
+
     if (!ctx.Nicknames.Any())
-    {{
-        ctx.Nicknames.AddRange(new[] {{
-            new Api.Models.Nickname {{ FullName = "Alice Anderson", Nick = "ali" }},
-            new Api.Models.Nickname {{ FullName = "Bob Brown", Nick = "bobby" }},
-            new Api.Models.Nickname {{ FullName = "Carol Clark", Nick = "caz" }},
-        }});
+    {
+        ctx.Nicknames.AddRange(
+        [
+            new Nickname { FullName = "Alice Anderson", Nick = "ali" },
+            new Nickname { FullName = "Bob Brown", Nick = "bobby" },
+            new Nickname { FullName = "Carol Clark", Nick = "caz" },
+        ]);
         ctx.SaveChanges();
-    }}
-}}
+    }
+}
 
 app.MapControllers();
 app.Run();
