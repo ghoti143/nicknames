@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import NicknameList from "@/components/NicknameList";
+import NicknameList from "../components/NicknameList";
 
 export default function Home() {
   return (
@@ -9,9 +9,7 @@ export default function Home() {
           <h1 className="text-4xl font-black text-white tracking-tight">
             Nicknames
           </h1>
-          <p className="text-zinc-500 mt-2">
-            Here are today's nicknames
-          </p>
+          <p className="text-zinc-500 mt-2">Here are today's nicknames</p>
         </header>
 
         <Suspense
