@@ -1,26 +1,17 @@
 import "server-only"; // Safety check: this file can only run on the server
-import { db } from '@/lib/drizzle';
-import { nicknames, fullnames } from '@/lib/schema';
-import { eq } from 'drizzle-orm';
 
 // Define the shape of our row
 interface NicknameEntry {
+  id: number;
   fullname: string;
   nickname: string;
 }
 
 export default async function NicknameList() {
-  console.log("starting DB query", new Date().toISOString());
-  const rows = await db
-    .select({ fullname: fullnames.fullname, nickname: nicknames.nickname })
-    .from(nicknames)
-    .innerJoin(fullnames, eq(nicknames.fullname_id, fullnames.id));
-  console.log("finished DB query", new Date().toISOString());
-
-  const nicknamesData: NicknameEntry[] = rows.map((row) => ({
-    fullname: row.fullname,
-    nickname: row.nickname,
-  }));
+  console.log("starting fetch", new Date().toISOString());
+  const res = await fetch('/api/nicknames', { cache: 'no-store' });
+  const nicknamesData: NicknameEntry[] = await res.json();
+  console.log("finished fetch", new Date().toISOString());
 
   return (
     <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl">
@@ -28,9 +19,9 @@ export default async function NicknameList() {
         <h3 className="font-bold text-white">Database Users</h3>
       </div>
       <ul className="divide-y divide-zinc-800">
-        {nicknamesData.map((row, index) => (
+        {nicknamesData.map((row) => (
           <li
-            key={index}
+            key={row.id}
             className="px-6 py-4 flex justify-between items-center group hover:bg-zinc-800/30 transition-colors"
           >
             <div>

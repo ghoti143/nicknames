@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: nicknames
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "user"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    container_name: nickname-api
+    environment:
+      - ConnectionStrings__Default=Host=db;Port=5432;Database=nicknames;Username=user;Password=password
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5000:80"
+    restart: unless-stopped
+
+volumes:
+  pgdata:
