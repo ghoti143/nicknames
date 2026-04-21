@@ -42,7 +42,7 @@ make start
 make frontend-dev
 ```
 - Frontend available at **http://localhost:3000**
-- Backend API available at **http://localhost:5000/api/nicknames** (adjust `NEXT_PUBLIC_API_URL` if needed)
+- Backend API available at **http://localhost:8888/api/nicknames** (adjust `NEXT_PUBLIC_API_URL` if needed)
 
 ## Useful Make Commands
 - `make start`    – Bring up PostgreSQL and .NET API containers.
