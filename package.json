@@ -3,16 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "bun --bun next dev",
+    "build": "bun --bun next build",
+    "start": "bun --bun next start",
     "lint": "biome check",
     "format": "biome format --write"
   },
   "dependencies": {
     "next": "16.2.4",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "drizzle-orm": "^0.34.0",
+    "@neondatabase/serverless": "^0.7.0",
+    "drizzle-kit": "^0.21.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
